@@ -271,6 +271,29 @@
         .route-list li:last-child { border-bottom: none; }
         .route-list .city { font-weight: 500; }
         .route-list .dates { color: var(--muted); }
+
+        /* Checklist */
+        .checklist { margin: 0; }
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .check-item:last-child { border-bottom: none; }
+        .check-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .check-item input:checked + span {
+            text-decoration: line-through;
+            color: var(--muted);
+        }
     </style>
 </head>
 <body>
@@ -281,8 +304,24 @@
 
     <!-- OVERVIEW -->
     <div class="day-section active" id="overview">
-        <div class="alert success">
-            <strong>✓ All set!</strong> Lincoln added to Gaudi Tour. Cash needed: €640 for driver (Day 5)
+        <div class="alert">
+            <strong>💰 Cash Needed:</strong> Withdraw €640 before leaving Madrid (Day 1-2). Pay driver Javi on Day 5 for Seville → Caminito → Granada transfer.
+        </div>
+
+        <div class="overview-card" style="border-left: 3px solid var(--orange);">
+            <h3>⚠️ Unresolved Items</h3>
+            <p style="font-size: 0.75rem; color: var(--muted); margin-bottom: 8px;">Tap to mark resolved</p>
+            <div class="checklist">
+                <label class="check-item"><input type="checkbox" id="ur1"> <span><strong>Day 3:</strong> Breakfast - grab at train station?</span></label>
+                <label class="check-item"><input type="checkbox" id="ur2"> <span><strong>Day 3:</strong> Plaza de España rowboats in Seville?</span></label>
+                <label class="check-item"><input type="checkbox" id="ur3"> <span><strong>Day 6:</strong> Lunch - after Alhambra, before flight</span></label>
+                <label class="check-item"><input type="checkbox" id="ur4"> <span><strong>Day 6:</strong> Dinner - Al Jaima? (Lebanese near hotel)</span></label>
+                <label class="check-item"><input type="checkbox" id="ur5"> <span><strong>Day 7:</strong> Breakfast - TBD</span></label>
+                <label class="check-item"><input type="checkbox" id="ur6"> <span><strong>Day 7:</strong> Dinner @ 8:30p - TBD</span></label>
+                <label class="check-item"><input type="checkbox" id="ur7"> <span><strong>Day 8:</strong> Breakfast - TBD</span></label>
+                <label class="check-item"><input type="checkbox" id="ur8"> <span><strong>Day 8:</strong> Dinner - last night in Barcelona!</span></label>
+                <label class="check-item"><input type="checkbox" id="ur9"> <span><strong>Barcelona:</strong> Food tour - find family-friendly option</span></label>
+            </div>
         </div>
 
         <div class="overview-card">
@@ -1330,6 +1369,18 @@
             details.classList.toggle('open');
             btn.textContent = details.classList.contains('open') ? 'Less info ▴' : 'More info ▾';
         }
+
+        // Unresolved items - save to localStorage
+        document.querySelectorAll('.checklist input[type="checkbox"]').forEach(cb => {
+            // Load saved state
+            if (localStorage.getItem(cb.id) === 'true') {
+                cb.checked = true;
+            }
+            // Save on change
+            cb.addEventListener('change', function() {
+                localStorage.setItem(this.id, this.checked);
+            });
+        });
     </script>
 </body>
 </html>
